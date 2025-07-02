@@ -43,7 +43,7 @@ jobs:
       - name: Build & Tag WAS image
         run: |
           docker build -t $WAS_IMAGE_NAME:$WAS_IMAGE_TAG ./petclinic_btc
-          docker tag $WAS_IMAGE_NAME:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/${{ secrets.ECR_REPO_WAS }}:$WAS_IMAGE_TAG
+          docker tag $WAS_IMAGE_NAME:$WAS_IMAGE_TAG ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/${{ secrets.ECR_REPO_WAS }}:$WAS_IMAGE_TAG
       - name: Push WAS
         run: |
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/${{ secrets.ECR_REPO_WAS }}:$WAS_IMAGE_TAG
@@ -58,7 +58,7 @@ jobs:
         run: |
           cd ..
           docker build -t $WEB_IMAGE_NAME:$WEB_IMAGE_TAG .
-          docker tag $WEB_IMAGE_NAME:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/${{ secrets.ECR_REPO_WEB }}:$WEB_IMAGE_TAG
+          docker tag $WEB_IMAGE_NAME:$WEB_IMAGE_TAG ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/${{ secrets.ECR_REPO_WEB }}:$WEB_IMAGE_TAG
       - name: Push WEB
         run: |
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/${{ secrets.ECR_REPO_WEB }}:$WEB_IMAGE_TAG
