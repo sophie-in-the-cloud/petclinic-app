@@ -60,18 +60,19 @@ jobs:
           sed -i "s|image: 946775837287.dkr.ecr.ap-northeast-2.amazonaws.com/was-repo:.*|image:946775837287.dkr.ecr.ap-northeast-2.amazonaws.com/was-repo:${WAS_IMAGE_TAG}|" was-deploy.yaml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b update-was-tag-${{ github.run_number }}
+          git checkout -B update-was-tag
           git commit -am "Update WAS image tag to ${WAS_IMAGE_TAG}"
-          git push origin update-was-tag-${{ github.run_number }}
+          git push origin update-was-tag --force
 
       - name: Create PR for WAS
         run: |
+          gh pr view update-was-tag || \
           gh pr create \
             --repo sophie-in-the-cloud/petclinic-manifest \
-            --head update-was-tag-${{ github.run_number }} \
+            --head update-was-tag \
             --base main \
             --title "Update WAS image tag to ${WAS_IMAGE_TAG}" \
-            --body "This PR updates the WAS image tag to \`${WAS_IMAGE_TAG}\`.\n\nTriggered by @${{ github.actor }}"
+            --body "$(echo -e "This PR updates the WAS image tag to \`${WAS_IMAGE_TAG}\`.\n\nTriggered by @${{ github.actor }}")"
         env:
           GITHUB_TOKEN: ${{ secrets.MY_PAT }}
 
@@ -101,16 +102,18 @@ jobs:
           sed -i "s|image: 946775837287.dkr.ecr.ap-northeast-2.amazonaws.com/web-repo:.*|image:946775837287.dkr.ecr.ap-northeast-2.amazonaws.com/web-repo:${WEB_IMAGE_TAG}|" web-deploy.yaml
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b update-web-tag-${{ github.run_number }}
+          git checkout -B update-web-tag
           git commit -am "Update WEB image tag to ${WEB_IMAGE_TAG}"
-          git push origin update-web-tag-${{ github.run_number }}
+          git push origin update-web-tag --force
       - name: Create PR for WEB
         run: |
+          gh pr view update-web-tag --repo sophie-in-the-cloud/petclinic-manifest || \
           gh pr create \
             --repo sophie-in-the-cloud/petclinic-manifest \
-            --head update-web-tag-${{ github.run_number }} \
+            --head update-web-tag \
             --base main \
             --title "Update WEB image tag to ${WEB_IMAGE_TAG}" \
-            --body "This PR updates the WEB image tag to \`${WEB_IMAGE_TAG}\`.\n\nTriggered by @${{ github.actor }}"
+            --body "$(echo -e "This PR updates the WEB image tag to \`${WEB_IMAGE_TAG}\`.\n\nTriggered by @${{ github.actor }}")"
+
         env:
           GITHUB_TOKEN: ${{ secrets.MY_PAT }}
