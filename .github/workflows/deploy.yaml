@@ -55,7 +55,7 @@ jobs:
       # --------Update YAML and generate PR for WAS--------- #
       - name: Update WAS deployment.yaml
         run: |
-          git clone --depth=1 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/sophie-in-the-cloud/petclinic-manifest.git manifest-was
+          git clone --depth=1 https://x-access-token:${{ secrets.MY_PAT }}@github.com/sophie-in-the-cloud/petclinic-manifest.git manifest-was
           cd manifest-was/base
           sed -i "s|image: 946775837287.dkr.ecr.ap-northeast-2.amazonaws.com/was-repo:.*|image:946775837287.dkr.ecr.ap-northeast-2.amazonaws.com/was-repo:${WAS_IMAGE_TAG}|" was-deploy.yaml
           git config user.name "github-actions[bot]"
@@ -96,7 +96,7 @@ jobs:
       # --------Update YAML and generate PR for WEB--------- #
       - name: Update WEB deployment.yaml
         run: |
-          git clone --depth=1 https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/sophie-in-the-cloud/petclinic-manifest.git manifest-web
+          git clone --depth=1 https://x-access-token:${{ secrets.MY_PAT }}@github.com/sophie-in-the-cloud/petclinic-manifest.git manifest-web
           cd manifest-web/base 
           sed -i "s|image: 946775837287.dkr.ecr.ap-northeast-2.amazonaws.com/web-repo:.*|image:946775837287.dkr.ecr.ap-northeast-2.amazonaws.com/web-repo:${WEB_IMAGE_TAG}|" web-deploy.yaml
           git config user.name "github-actions[bot]"
