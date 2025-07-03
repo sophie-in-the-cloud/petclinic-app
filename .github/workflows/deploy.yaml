@@ -73,7 +73,7 @@ jobs:
             --title "Update WAS image tag to ${WAS_IMAGE_TAG}" \
             --body "This PR updates the WAS image tag to \`${WAS_IMAGE_TAG}\`.\n\nTriggered by @${{ github.actor }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
 
 
       #---------------------------------WEB----------------------------#
@@ -113,4 +113,4 @@ jobs:
             --title "Update WEB image tag to ${WEB_IMAGE_TAG}" \
             --body "This PR updates the WEB image tag to \`${WEB_IMAGE_TAG}\`.\n\nTriggered by @${{ github.actor }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
