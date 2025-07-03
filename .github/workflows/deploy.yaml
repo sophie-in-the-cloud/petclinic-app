@@ -41,12 +41,13 @@ jobs:
           else
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
+          echo $GITHUB_OUTPUT
 
       #---------------------------------WAS----------------------------#
   build-was:
     runs-on: ubuntu-latest
     needs: build
-    if: needs.build.outputs.was_changed == 'true'
+      #    if: needs.build.outputs.was_changed == 'true'
     steps:
       - name: Build WAR
         run: |
@@ -95,9 +96,9 @@ jobs:
   build-web:
     runs-on: ubuntu-latest
     needs: build
-    if: | 
-      contains(join(github.event.head_commit.modified, ', '), 'app/httpd.conf')
-      || contains(join(github.event.head_commit.modified, ', '), 'app/Dockerfile')
+      # if: | 
+      # contains(join(github.event.head_commit.modified, ', '), 'app/httpd.conf')
+      # || contains(join(github.event.head_commit.modified, ', '), 'app/Dockerfile')
     steps:
       # --------Build WEB Image--------- #
       - name: Build WEB Tag
