@@ -49,6 +49,8 @@ jobs:
     needs: build
       #    if: needs.build.outputs.was_changed == 'true'
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Build WAR
         run: |
           cd petclinic_btc
@@ -100,7 +102,10 @@ jobs:
       # contains(join(github.event.head_commit.modified, ', '), 'app/httpd.conf')
       # || contains(join(github.event.head_commit.modified, ', '), 'app/Dockerfile')
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       # --------Build WEB Image--------- #
+      
       - name: Build WEB Tag
         run: |
           SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
