@@ -6,13 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      was_changed: ${{ steps.check_was.outputs.changed }}
     env:
       WAS_IMAGE_NAME: petclinic-was
-      WEB_IMAGE_NAME: petclinic-web
       WAS_VERSION: v1.0.0
-      WEB_VERSION: v1.0.0
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -73,47 +69,5 @@ jobs:
             --base main \
             --title "Update WAS image tag to ${WAS_IMAGE_TAG}" \
             --body "$(echo -e "This PR updates the WAS image tag to \`${WAS_IMAGE_TAG}\`.\n\nTriggered by @${{ github.actor }}")"
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_PAT }}
-
-
-      #---------------------------------WEB----------------------------#
-      # --------Build WEB Image--------- #
-      
-      - name: Build WEB Tag
-        run: |
-          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-          WEB_IMAGE_TAG="${WEB_VERSION}-${SHORT_SHA}"
-          echo "WEB_IMAGE_TAG=$WEB_IMAGE_TAG" >> $GITHUB_ENV
-      - name: Build & Tag WEB image
-        run: |
-          docker build -t $WEB_IMAGE_NAME:$WEB_IMAGE_TAG .
-          docker tag $WEB_IMAGE_NAME:$WEB_IMAGE_TAG ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/${{ secrets.ECR_REPO_WEB }}:$WEB_IMAGE_TAG
-      - name: Push WEB
-        run: |
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/${{ secrets.ECR_REPO_WEB }}:$WEB_IMAGE_TAG
-
-
-      # --------Update YAML and generate PR for WEB--------- #
-      - name: Update WEB deployment.yaml
-        run: |
-          git clone --depth=1 https://x-access-token:${{ secrets.MY_PAT }}@github.com/sophie-in-the-cloud/petclinic-manifest.git manifest-web
-          cd manifest-web/base 
-          sed -i "s|image: 946775837287.dkr.ecr.ap-northeast-2.amazonaws.com/web-repo:.*|image: 946775837287.dkr.ecr.ap-northeast-2.amazonaws.com/web-repo:${WEB_IMAGE_TAG}|" web-deploy.yaml
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B update-web-tag
-          git commit -am "Update WEB image tag to ${WEB_IMAGE_TAG}"
-          git push origin update-web-tag --force
-      - name: Create PR for WEB
-        run: |
-          gh pr view update-web-tag --repo sophie-in-the-cloud/petclinic-manifest || \
-          gh pr create \
-            --repo sophie-in-the-cloud/petclinic-manifest \
-            --head update-web-tag \
-            --base main \
-            --title "Update WEB image tag to ${WEB_IMAGE_TAG}" \
-            --body "$(echo -e "This PR updates the WEB image tag to \`${WEB_IMAGE_TAG}\`.\n\nTriggered by @${{ github.actor }}")"
-
         env:
           GITHUB_TOKEN: ${{ secrets.MY_PAT }}
