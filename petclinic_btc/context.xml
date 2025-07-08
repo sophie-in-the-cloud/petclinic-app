@@ -22,12 +22,7 @@
     <WatchedResource>WEB-INF/tomcat-web.xml</WatchedResource>
     <WatchedResource>${catalina.base}/conf/web.xml</WatchedResource>
 
-    <Manager className="tomcat.request.session.redis.SessionManager">
-        <Parameter name="host" value="njt-petclinic-valkey-o2ji5m.serverless.apn2.cache.amazonaws.com"/>
-        <Parameter name="port" value="6379"/>
-        <Parameter name="database" value="0"/>
-        <Parameter name="maxInactiveInterval" value="60"/>
-    </Manager>
-
+    <Valve className="tomcat.request.session.redis.SessionHandlerValve"/>
+    <Manager className="tomcat.request.session.redis.SessionManager"/>
 </Context>
 
