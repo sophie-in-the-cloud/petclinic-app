@@ -7,4 +7,3 @@ COPY tomcat-cluster-redis-session-manager/conf/* /usr/local/tomcat/conf
 COPY redis-data-cache.properties /usr/local/tomcat/conf/
 COPY context.xml /usr/local/tomcat/conf/
 COPY target/petclinic.war /usr/local/tomcat/webapps/ROOT.war
-COPY session_check.jsp /usr/local/tomcat/webapps/ROOT/
