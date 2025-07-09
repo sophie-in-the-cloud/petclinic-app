@@ -67,7 +67,9 @@ public class ClinicServiceImpl implements ClinicService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "owners", key = "#lastName")
     public Collection<Owner> findOwnerByLastName(String lastName) {
+	System.out.println("DB에서 owners 읽음: " + lastName);
         return ownerRepository.findByLastName(lastName);
     }
 
