@@ -1,16 +1,18 @@
 # 🐾 Petclinic Application (WAS)
 
-This is a Spring Boot-based Petclinic application, responsible for the **Application Tier** in a 3-Tier architecture.  
-It includes Redis-based session clustering and integration with AWS Secrets Manager for secure configuration.
+This is a Spring Boot-based Petclinic application, serving as the **Application Tier** in a 3-Tier architecture.  
+It handles both business logic and server-side view rendering, and is deployed on Tomcat.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- Java 11
-- Spring Boot
-- AWS ElasticCache (Session Clustering)  
-- MySQL (AWS RDS)  
+- Java 11  
+- Spring Boot  
+- Maven  
+- Apache Tomcat  
+- AWS ElastiCache for Redis (Session Clustering)  
+- AWS RDS (MySQL)  
 - AWS Secrets Manager  
 
 ---
@@ -21,28 +23,29 @@ It includes Redis-based session clustering and integration with AWS Secrets Mana
 ./mvnw clean package -DskipTests -PMySQL
 ```
 
-- The `MySQL` profile loads DB credentials from AWS Secrets Manager.
+- The `MySQL` profile retrieves DB credentials from AWS Secrets Manager.
 
 ---
 
 ## 📌 Key Features
 
-- Basic Owner and Pet search functionality  
-- Redis-based session clustering for scalability  
-- Sensitive credentials managed securely via AWS Secrets Manager
+- Basic owner and pet data search functionality  
+- Redis-based HTTP session clustering for horizontal scalability  
+- Externalized secrets management with AWS Secrets Manager
 
 ---
 
 ## 🔁 CI/CD Pipeline
 
-- GitHub Actions builds the Docker image and pushes it to ECR  
-- Argo CD automates deployment to the Kubernetes cluster
+- GitHub Actions builds a Docker image and pushes it to AWS ECR  
+- Then it automatically creates a Pull Request to the [`manifest`](https://github.com/sophie-in-the-cloud/petclinic-manifest) repository with the updated image tag  
+- Once the PR is **reviewed and approved**, Argo CD detects the change and syncs the deployment to the EKS cluster
 
-> For deployment configuration, refer to the [`manifest`](https://github.com/sophie-in-the-cloud/petclinic-manifest) repository.
+> This approval step ensures safer and auditable production deployments.
 
 ---
 
 ## 📂 Notes
 
-- This service runs as the WAS layer in an AWS EKS cluster.  
-- Designed as a backend API to support frontend client access.
+- This application runs as the WAS layer within an AWS EKS cluster  
+- Designed to support frontend access via HTTP reverse proxy (Web Tier)
