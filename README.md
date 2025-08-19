@@ -4,6 +4,10 @@ This is a Spring Boot-based Petclinic application, serving as the **Application 
 It handles both business logic and server-side view rendering, and is deployed on Tomcat.
 
 ---
+## 🏗️ Architecture
+![Architecture](architecture.png)
+
+---
 
 ## 🛠️ Tech Stack
 
